@@ -10,5 +10,6 @@
 </template>
 
 <script setup>
+// TODO update logic to receive props instead
 import { toolbar } from '../tools/util'
 </script>
