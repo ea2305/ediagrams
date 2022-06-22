@@ -38,6 +38,7 @@ interface CanvasApp {
   ctx: CanvasRenderingContext2D | null, // 2d support only
   lastRendered: number,
   shapes: Shape[],
+  previews?: Shape[],
   requestAnimationId: number | undefined,
 }
 
@@ -109,6 +110,7 @@ export class Canvas {
    */
   begin(): void | never {
     const { app } = this;
+    const { requestAnimationFrame } = window;
     function loop(time: number) {
       if (app.canvas && app.ctx) {
         app.ctx.clearRect(0, 0,
@@ -117,14 +119,12 @@ export class Canvas {
         );
         app.shapes.forEach((shape) => shape.draw(app.ctx));
         app.lastRendered = time;
-        window.requestAnimationFrame(loop);
+        requestAnimationFrame(loop);
       }
     }
-    app.requestAnimationId = window.requestAnimationFrame(loop);
+    app.requestAnimationId = requestAnimationFrame(loop);
   }
   end(): void | never {
-    console.log('end---', this.app.requestAnimationId);
-    
     if (this.app.requestAnimationId) {
       window.cancelAnimationFrame(this.app.requestAnimationId);
       this.app.requestAnimationId = undefined;
