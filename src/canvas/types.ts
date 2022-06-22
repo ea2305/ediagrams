@@ -1,4 +1,4 @@
-import { Tool, MouseState } from './models'
+import { Tool, MouseState, Point } from './models'
 
 interface CanvasState {
   tool: Tool,
@@ -17,11 +17,12 @@ interface CanvasApp {
   ctx: CanvasRenderingContext2D | null, // 2d support only
   lastRendered: number,
   shapes: Shape[],
-  previews?: Shape[],
+  previews: Shape[],
   requestAnimationId: number | undefined,
 }
 
 interface Shape {
+  origin: Point;
   draw(ctx: CanvasRenderingContext2D | null): void;
 }
 
