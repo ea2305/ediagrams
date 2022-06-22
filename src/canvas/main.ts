@@ -1,46 +1,5 @@
-// global canvas state
-// global canvas events
-// canvas initialization
-  // get context
-  // init drawing loop
-  // stop drawing loop
-
-// TODO implement new tools
-enum Tool {
-  NONE = 'NONE',
-  RECT = 'RECT'
-}
-
-enum MouseState {
-  IDLE = 'IDLE',
-  DOWN = 'DOWN',
-  UP = 'UP'
-}
-
-interface CanvasState {
-  tool: Tool,
-  mouse: MouseState,
-  color: string, 
-}
-
-interface CanvasConfig {
-  nodeId: string,
-  width: number,
-  height: number
-}
-
-interface Shape {
-  draw(ctx: CanvasRenderingContext2D | null): void;
-}
-
-interface CanvasApp {
-  canvas: HTMLCanvasElement | null,
-  ctx: CanvasRenderingContext2D | null, // 2d support only
-  lastRendered: number,
-  shapes: Shape[],
-  previews?: Shape[],
-  requestAnimationId: number | undefined,
-}
+import { Tool, MouseState } from './models'
+import type { CanvasState, CanvasConfig, Shape, CanvasApp } from './types'
 
 export class Canvas {
 

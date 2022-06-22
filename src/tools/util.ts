@@ -1,19 +1,4 @@
-interface Action {
-  id: string;
-  name: string;
-}
-
-interface Color {
-  id: string;
-  name: string;
-  hex: string;
-}
-
-interface Toolbar {
-  colors: Color[];
-  actions: Action[];
-}
-
+import type { Action, Color, Toolbar } from './types'
 const actions: Action[] = [
   {
     id: "rect-btn",
