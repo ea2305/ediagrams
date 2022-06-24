@@ -1,4 +1,4 @@
-import { Tool, MouseState, Point } from './models'
+import { Tool, MouseState, Point, Size } from './models'
 
 interface CanvasState {
   tool: Tool,
@@ -23,6 +23,8 @@ interface CanvasApp {
 
 interface Shape {
   origin: Point;
+  size: Size;
+  conf: Object;
   draw(ctx: CanvasRenderingContext2D | null): void;
 }
 
