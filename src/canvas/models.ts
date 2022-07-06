@@ -44,6 +44,9 @@ class Rect implements Shape {
     if (this.conf.filled && this.conf.fillStyle) {
       ctx.fillStyle = this.conf.fillStyle;
     }
+    if (this.conf.edit) {
+      ctx.fillStyle = 'blue';
+    }
     ctx.fillRect(this.origin.x, this.origin.y, this.size.w, this.size.h);
     ctx.rect(this.origin.x, this.origin.y, this.size.w, this.size.h);
     ctx.stroke();
@@ -53,6 +56,13 @@ class Rect implements Shape {
       // insert in the list after draw if need it
       console.log("[draw] rect:", origin);
     }
+  }
+
+  clickOver(pos: Point): boolean {
+    return (
+      pos.x >= this.origin.x && pos.x <= this.origin.x + this.size.w &&
+      pos.y >= this.origin.y && pos.y <= this.origin.y + this.size.h
+    );
   }
 }
 

@@ -18,14 +18,16 @@ interface CanvasApp {
   lastRendered: number,
   shapes: Shape[],
   previews: Shape[],
+  edit: Shape[],
   requestAnimationId: number | undefined,
 }
 
 interface Shape {
   origin: Point;
   size: Size;
-  conf: Object;
+  conf: any;
   draw(ctx: CanvasRenderingContext2D | null): void;
+  clickOver(pos: Point): boolean;
 }
 
 export type {

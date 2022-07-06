@@ -1,4 +1,4 @@
-import { Tool, MouseState, Rect, Size } from "./models";
+import { Tool, MouseState, Rect, Size, Point } from "./models";
 import type { CanvasState, CanvasConfig, Shape, CanvasApp } from "./types";
 import { getPosFromClickEvent, getSizeFromClickEvent } from "./mouseHandler";
 
@@ -24,6 +24,7 @@ export class Canvas {
       lastRendered: 0,
       shapes: [],
       previews: [],
+      edit: [],
       requestAnimationId: undefined,
     };
   }
@@ -48,12 +49,38 @@ export class Canvas {
   check(): boolean {
     return Boolean(this.app.canvas && this.app.ctx);
   }
+
+  checkShapesClick(pos: Point) {
+    // reset config
+    this.app.edit.forEach(shape => {
+      shape.conf.edit = false;
+    })
+    this.app.edit = [];
+
+    const matches = this.app.shapes.filter(shape => {
+      return shape.clickOver(pos);
+    });
+    const top = matches[matches.length - 1];
+
+    // validates undefined value (click in empty space)
+    if (!top) {
+      return;
+    }
+
+    // update shape to edit mode.
+    top.conf.edit = true;
+    this.app.edit.push(top)
+  }
+
   mouseDown(event: MouseEvent) {
     this.state.mouse = MouseState.DOWN;
     if (!this.app.canvas) {
       throw new Error("[mouse-down] canvas not found");
     }
     const origin = getPosFromClickEvent(event, this.app.canvas);
+
+    // validate click inside drew shape
+    this.checkShapesClick(origin);
 
     // TODO generate options with configuration
     const config = {
