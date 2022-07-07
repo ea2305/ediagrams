@@ -69,6 +69,7 @@ class Rect implements Shape {
 // TODO implement new tools
 enum Tool {
   NONE = 'NONE',
+  POINTER = 'POINTER',
   RECT = 'RECT'
 }
 

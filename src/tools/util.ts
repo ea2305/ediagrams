@@ -1,14 +1,15 @@
+import { Tool } from '../canvas/models'
 import type { Action, Color, Toolbar } from './types'
 const actions: Action[] = [
   {
     id: "rect-btn",
     name: "Rectangle",
-    trigger: 'rect'
+    trigger: Tool.RECT
   },
   {
     id: "pointer-btn",
     name: "Pointer",
-    trigger: 'pointer'
+    trigger: Tool.POINTER
   },
 ]
 

@@ -8,11 +8,12 @@
 import { onMounted, onBeforeUnmount, watch } from 'vue'
 import { Canvas } from '../canvas/main'
 
-const props = defineProps(['action']);
+const props = defineProps(['tool']);
 
 // update toolset state
-watch(() => props.action, (value) => {
-  console.log('action - watch:', value)
+watch(() => props.tool, (tool) => {
+  console.log('action - watch:', tool)
+  canvasInstance.setToolState(tool)
 })
 
 // TODO find a better way to handle canvas configuration
@@ -24,7 +25,7 @@ const canvas = {
 };
 
 function begin() {
-  console.log('action: ', props.action);
+  console.log('action: ', props.tool);
   canvasInstance.begin();
 }
 

@@ -28,18 +28,23 @@ export class Canvas {
       requestAnimationId: undefined,
     };
   }
+
   setConfig(config: CanvasConfig): void {
     this.config = config;
   }
+
   getState(): CanvasState {
     return this.state;
   }
+
   getConfig(): CanvasConfig {
     return this.config;
   }
+
   setMouseState(mouseState: MouseState): void {
     this.state.mouse = mouseState;
   }
+
   setToolState(toolState: Tool): void {
     this.state.tool = toolState;
   }
@@ -52,12 +57,12 @@ export class Canvas {
 
   checkShapesClick(pos: Point) {
     // reset config
-    this.app.edit.forEach(shape => {
+    this.app.edit.forEach((shape) => {
       shape.conf.edit = false;
-    })
+    });
     this.app.edit = [];
 
-    const matches = this.app.shapes.filter(shape => {
+    const matches = this.app.shapes.filter((shape) => {
       return shape.clickOver(pos);
     });
     const top = matches[matches.length - 1];
@@ -69,50 +74,59 @@ export class Canvas {
 
     // update shape to edit mode.
     top.conf.edit = true;
-    this.app.edit.push(top)
+    this.app.edit.push(top);
   }
 
   mouseDown(event: MouseEvent) {
-    this.state.mouse = MouseState.DOWN;
     if (!this.app.canvas) {
       throw new Error("[mouse-down] canvas not found");
     }
+    this.state.mouse = MouseState.DOWN;
     const origin = getPosFromClickEvent(event, this.app.canvas);
 
-    // validate click inside drew shape
-    this.checkShapesClick(origin);
+    if (this.state.tool === Tool.POINTER) {
+      // validate click inside drew shape
+      this.checkShapesClick(origin);
+    } else {
+      // TODO generate options with configuration
+      const config = {
+        line: 1,
+        filled: true,
+        fillStyle: "red",
+        strokeLine: "blue",
+        track: false,
+      };
 
-    // TODO generate options with configuration
-    const config = {
-      line: 1,
-      filled: true,
-      fillStyle: "red",
-      strokeLine: "blue",
-      track: false,
-    };
-
-    // TODO implement all shapes
-    const shape = new Rect(origin, new Size(), config);
-    this.app.previews.push(shape);
+      // TODO implement all shapes
+      const shape = new Rect(origin, new Size(), config);
+      this.app.previews.push(shape);
+    }
   }
+
   mouseUp(event: MouseEvent) {
     if (!this.app.canvas) {
       throw new Error("[mouse-up] canvas not found");
     }
     this.state.mouse = MouseState.UP;
-    this.update(event, this.app.canvas);
-    this.app.previews.pop(); // remove last reference of drew element
+    if (this.state.tool !== Tool.POINTER) {
+      this.update(event, this.app.canvas);
+      this.app.previews.pop(); // remove last reference of drew element
+    }
   }
+
   mouseMove(event: MouseEvent) {
     if (this.state.mouse === MouseState.DOWN && this.app.previews.length) {
-      let current = this.app.previews.pop();
-      if (current && this.app.canvas) {
-        const size = getSizeFromClickEvent(event, current, this.app.canvas);
-        current.size = size;
-        this.app.previews.push(current);
+      if (this.state.tool !== Tool.POINTER) {
+        let current = this.app.previews.pop();
+        if (current && this.app.canvas) {
+          const size = getSizeFromClickEvent(event, current, this.app.canvas);
+          current.size = size;
+          this.app.previews.push(current);
+        }
       }
     }
   }
+
   update(event: MouseEvent, canvas: HTMLCanvasElement) {
     let [currentShape] = this.app.previews;
     const size = getSizeFromClickEvent(event, currentShape, canvas);
