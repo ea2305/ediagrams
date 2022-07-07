@@ -1,6 +1,7 @@
 interface Action {
   id: string;
   name: string;
+  trigger: string
 }
 
 interface Color {

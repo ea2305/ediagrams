@@ -5,34 +5,42 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted, onBeforeUnmount } from 'vue'
-  import { Canvas } from '../canvas/main'
+import { onMounted, onBeforeUnmount, watch } from 'vue'
+import { Canvas } from '../canvas/main'
 
-  // TODO find a better way to handle canvas configuration
-  let canvasInstance = new Canvas();
-  const canvas = {
-    nodeId: "canvas-board",
-    width: 500,
-    height: 500
-  };
-  
-  function begin() {
-    canvasInstance.begin();
-  }
-  
-  function end() {
-    canvasInstance.end();
-  }
+const props = defineProps(['action']);
 
-  onMounted((): void => {
-    console.log('[init] canvas');
-    canvasInstance.setConfig(canvas);
-    canvasInstance.init();
-  })
+// update toolset state
+watch(() => props.action, (value) => {
+  console.log('action - watch:', value)
+})
 
-  onBeforeUnmount((): void => {
-    console.log('[destroy] canvas');
-  })
+// TODO find a better way to handle canvas configuration
+let canvasInstance = new Canvas();
+const canvas = {
+  nodeId: "canvas-board",
+  width: 500,
+  height: 500
+};
+
+function begin() {
+  console.log('action: ', props.action);
+  canvasInstance.begin();
+}
+
+function end() {
+  canvasInstance.end();
+}
+
+onMounted((): void => {
+  console.log('[init] canvas');
+  canvasInstance.setConfig(canvas);
+  canvasInstance.init();
+})
+
+onBeforeUnmount((): void => {
+  console.log('[destroy] canvas');
+})
 </script>
 
 <style scoped>

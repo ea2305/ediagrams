@@ -2,8 +2,14 @@ import type { Action, Color, Toolbar } from './types'
 const actions: Action[] = [
   {
     id: "rect-btn",
-    name: "Rectangle"
-  }
+    name: "Rectangle",
+    trigger: 'rect'
+  },
+  {
+    id: "pointer-btn",
+    name: "Pointer",
+    trigger: 'pointer'
+  },
 ]
 
 const colors: Color[] = [
